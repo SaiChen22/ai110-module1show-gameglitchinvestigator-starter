@@ -79,3 +79,4 @@ Next time I work with AI on a coding task, I would ask it to explain *why* a bug
 This project changed how I think about AI-generated code: I used to assume that if the code runs without errors, it probably works. Now I know that subtle logic bugs — like inverted conditions or silent type coercions — can make code run fine while producing completely wrong results, and only careful reading or tests will catch them.
 
 ---
+
