@@ -1,66 +1,116 @@
-# 🎮 Game Glitch Investigator: The Impossible Guesser
+# 🎮 Game Glitch Investigator
 
-## 🚨 The Situation
+A Streamlit number-guessing game that started as a bug-hunt exercise and was
+expanded with persistent scoring and a more structured UI.
 
-You asked an AI to build a simple "Number Guessing Game" using Streamlit.
-It wrote the code, ran away, and now the game is unplayable. 
+## Overview
 
-- You can't win.
-- The hints lie to you.
-- The secret number seems to have commitment issues.
+Players guess a secret number within a difficulty-based range and attempt limit.
+After each guess, the game provides directional hints and qualitative heat
+feedback (Hot/Warm/Cold) while tracking score and attempt history.
 
-## 🛠️ Setup
+## Project Reflection
 
-1. Install dependencies: `pip install -r requirements.txt`
-2. Run the broken app: `python -m streamlit run app.py`
+### 1) Game Purpose
 
-## 🕵️‍♂️ Your Mission
+The purpose of this game is to create an interactive number-guessing challenge
+where players use hint feedback to find a hidden number within limited attempts.
+The project also demonstrates state management, game-logic design, and testing
+in a Streamlit application.
 
-1. **Play the game.** Open the "Developer Debug Info" tab in the app to see the secret number. Try to win.
-2. **Find the State Bug.** Why does the secret number change every time you click "Submit"? Ask ChatGPT: *"How do I keep a variable from resetting in Streamlit when I click a button?"*
-3. **Fix the Logic.** The hints ("Higher/Lower") are wrong. Fix them.
-4. **Refactor & Test.** - Move the logic into `logic_utils.py`.
-   - Run `pytest` in your terminal.
-   - Keep fixing until all tests pass!
+### 2) Bugs Found
 
-## 📝 Document Your Experience
+- Session state bugs caused inconsistent gameplay resets (attempts/status).
+- Hint direction logic was inverted in some outcomes.
+- Type corruption made some win checks fail due to int/string mismatch.
+- Difficulty range handling was inconsistent in specific flows.
+- Win score calculation had an off-by-one issue.
+- UI feedback revealed too much information (exact distance/secret spoilers).
 
-- [ ] Describe the game's purpose.
-- [ ] Detail which bugs you found.
-- [ ] Explain what fixes you applied.
+### 3) Fixes Applied
 
-## ✨ Challenge 2 Feature: Persistent High Score
+- Standardized session initialization and new-game reset behavior.
+- Corrected higher/lower hint logic and removed unsafe type paths.
+- Kept secret values consistently typed during comparisons.
+- Unified range usage by difficulty across game setup and resets.
+- Corrected scoring math and added a minimum score floor.
+- Added persistent high-score tracking with file-backed storage.
+- Upgraded the UI with structured heat feedback and summary tables.
+- Reworked hints/status messages to avoid exposing the answer directly.
+- Added and updated tests so changes are validated with `pytest`.
 
-The game now saves your best winning score to a local `high_score.json` file.
+## Features
 
-- The sidebar shows the current best score, the difficulty where it happened, and how many attempts it took.
-- A new record is written to disk after a win.
-- Tied scores are broken by fewer attempts, so a cleaner win can replace an older record.
+- Difficulty modes with different ranges and attempt limits:
+   - Easy: 1–20
+   - Normal: 1–100
+   - Hard: 1–500
+- Scoring system based on outcomes and attempt number
+- Persistent high score saved locally to `high_score.json`
+- Enhanced UI with:
+   - Heat-guide hints (🔥 Hot / 🌤️ Warm / 🧊 Cold / 🎯 Perfect)
+   - Player stat cards (score, attempts left, best score)
+   - Session summary table for each attempt
+- Automated tests for core game logic and feature helpers
 
-### 🤖 How the agent contributed
+## Tech Stack
 
-Agent mode helped plan the feature in three steps:
+- Python 3.12+
+- Streamlit
+- Pytest
 
-1. Separate the file persistence logic into testable helpers inside `logic_utils.py`.
-2. Wire the saved high score into Streamlit session state so the sidebar updates immediately after a win.
-3. Add `pytest` coverage for missing files, first-save behavior, and score tie-break rules.
+## Setup
 
-## 📸 Demo
+1. Clone the repository
+2. Create and activate a virtual environment
+3. Install dependencies
 
-- ![alt text](image.png)
-![testing pass](image-1.png)
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
-## 🚀 Stretch Features
+## Run the App
 
-## ✨ Challenge 4: Enhanced Game UI
+```bash
+python -m streamlit run app.py
+```
 
-The player experience now includes a more structured interface:
+## Run Tests
 
-- Color-coded hot, warm, cold, and perfect hint cards after each valid guess.
-- Quick-glance stat cards for score, attempts left, and saved best score.
-- A session summary table that shows each guess, direction, heat state, distance,
-  and score impact.
+```bash
+pytest
+```
 
-### Screenshot of the enhanced player experience
+## Challenge 2: Persistent High Score
+
+The game now persists your best winning score and displays it in the sidebar.
+
+- High score includes score value, difficulty, and attempts used
+- Records are written to `high_score.json`
+- Tie-breaker logic prefers fewer attempts when scores are equal
+
+### How Agent Mode contributed
+
+Agent Mode was used to:
+
+1. Plan helper-based persistence logic in `logic_utils.py`
+2. Integrate high-score loading/updating into Streamlit session flow
+3. Add test coverage for missing file, first save, and tie-break behavior
+
+## Challenge 4: Enhanced Game UI
+
+The UI was upgraded to make gameplay feedback more readable and engaging:
+
+- Color-coded hint panel with emoji-based heat states
+- Structured round summary table
+- Clear post-game status messaging without revealing the answer in hints
+
+### Enhanced UI Screenshot
 
 ![Enhanced Game UI screenshot](screenshot/challenge4.png)
+
+## Additional Screenshot
+
+![Challenge 1 test pass screenshot](screenshot/challenge1_test_pass.png)
