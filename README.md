@@ -29,6 +29,22 @@ It wrote the code, ran away, and now the game is unplayable.
 - [ ] Detail which bugs you found.
 - [ ] Explain what fixes you applied.
 
+## ✨ Challenge 2 Feature: Persistent High Score
+
+The game now saves your best winning score to a local `high_score.json` file.
+
+- The sidebar shows the current best score, the difficulty where it happened, and how many attempts it took.
+- A new record is written to disk after a win.
+- Tied scores are broken by fewer attempts, so a cleaner win can replace an older record.
+
+### 🤖 How the agent contributed
+
+Agent mode helped plan the feature in three steps:
+
+1. Separate the file persistence logic into testable helpers inside `logic_utils.py`.
+2. Wire the saved high score into Streamlit session state so the sidebar updates immediately after a win.
+3. Add `pytest` coverage for missing files, first-save behavior, and score tie-break rules.
+
 ## 📸 Demo
 
 - ![alt text](image.png)
@@ -36,4 +52,15 @@ It wrote the code, ran away, and now the game is unplayable.
 
 ## 🚀 Stretch Features
 
-- [ ] [If you choose to complete Challenge 4, insert a screenshot of your Enhanced Game UI here]
+## ✨ Challenge 4: Enhanced Game UI
+
+The player experience now includes a more structured interface:
+
+- Color-coded hot, warm, cold, and perfect hint cards after each valid guess.
+- Quick-glance stat cards for score, attempts left, and saved best score.
+- A session summary table that shows each guess, direction, heat state, distance,
+  and score impact.
+
+### Screenshot of the enhanced player experience
+
+![Enhanced Game UI screenshot](screenshot/challenge4.png)
